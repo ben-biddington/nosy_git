@@ -6,6 +6,9 @@ echo "Mining source repo <$the_git_repo>"
 
 cd $the_git_repo
 
-count=`git log --name-status | grep -Ei "^[MA]\s+" | sort | uniq -c | sort -h`
+number_of_files=`git ls-tree -r --name-only HEAD | wc -l`
 
-echo "There are <$count> files in the <$the_git_repo> repository"  
+all_counts=`git log --name-status | grep -Ei "^[MA]\s+" | sort | uniq -c | sort -h | sed 's/^ *//g' | grep -Eo ^[0-9]+`
+
+echo "$all_counts"
+echo "There are <$number_of_files> files in total."
