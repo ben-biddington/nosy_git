@@ -1,0 +1,1 @@
+# usage: R --vanilla --args "csv/sample_data.csv" "out/xxx.png" < example.R
