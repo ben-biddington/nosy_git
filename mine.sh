@@ -8,4 +8,4 @@ cd $the_git_repo
 
 count=`git log --name-status | grep -Ei "^[MA]\s+" | uniq | wc -l`
 
-echo "There are <$count> files in the repository"  
+echo "There are <$count> files in the <$the_git_repo> repository"  
