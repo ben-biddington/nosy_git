@@ -10,4 +10,12 @@ read in a `.R` file, and supply data and output as args, R will connect it all t
 
 As inspired by Kent Beck's Closure of Code (can't find earl).
 
-to find all the files in a repo
+to find all the files in a repo:
+
+   $ git ls-tree -r --name-only HEAD | wc -l
+
+to collect all modifications:
+
+  $ git log --name-status | grep -Ei "^[MA]\s+" | sort | uniq -c | sort -h | sed 's/^ *//g' | grep -Eo ^[0-9]+
+
+
