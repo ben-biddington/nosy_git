@@ -18,13 +18,17 @@ describe "printing the rate of change of one file" do
     %x{ echo `date` >> README }
     %x{ git commit -am "Phil's lunch box" }
 
-    result = %x{ ../bin/nosy_git README }
+    result = nosy_git "README"
     result.must =~ /Jazz\'s bike seat$/
     result.must =~ /Phil\'s lunch box$/
   end
 
   private
 
+  def nosy_git file
+    %x{ ../bin/nosy_git #{file} }
+  end
+  
   def given_a_git_repo_at path
     Git.create_at path
   end
