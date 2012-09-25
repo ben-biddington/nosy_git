@@ -1,0 +1,10 @@
+#!/usr/bin/ruby
+
+the_file = ARGV[0]
+
+puts "(#{FileUtils.pwd})"
+puts "Analyzing <#{the_file}>"
+
+revisions = %x{ git log --oneline -- #{the_file} }
+
+puts "#{revisions}"
