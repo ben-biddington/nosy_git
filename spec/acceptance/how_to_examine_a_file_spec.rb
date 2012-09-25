@@ -11,6 +11,13 @@ describe "printing the rate of change of one file" do
   after { cd ".." }
 
   it "lists each revision" do
+    %x{ touch README }
+    %x{ echo `date` >> README }
+    %x{ git add -A }
+    %x{ git commit -m "Jazz's bike seat" }
+    %x{ echo `date` >> README }
+    %x{ git commit -am "Phil's lunch box" }
+
     result = %x{ ../bin/nosy_git README }
     result.must =~ /Jazz\'s bike seat$/
     result.must =~ /Phil\'s lunch box$/
