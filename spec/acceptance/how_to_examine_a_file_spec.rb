@@ -23,8 +23,8 @@ describe "printing the rate of change of one file" do
     %x{ git commit -am "Phil's lunch box" }
 
     result = nosy_git "README"
-    result.must =~ /Jazz\'s bike seat$/
-    result.must =~ /Phil\'s lunch box$/
+    result.must =~ /Jazz\'s bike seat/
+    result.must =~ /Phil\'s lunch box/
   end
 
   it "with each revision, it prints the number of lines in the file" do

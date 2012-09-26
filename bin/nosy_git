@@ -9,12 +9,20 @@ class Lines
   end
 end
 
+class Revisions
+  class << self
+    def for(file)
+      %x{ git log --oneline -- #{file} }
+    end
+  end
+end
+
 the_file = ARGV[0]
 
 puts "(#{FileUtils.pwd})"
 puts "Analyzing <#{the_file}>"
 
-revisions = %x{ git log --oneline -- #{the_file} }
+revisions = Revisions.for the_file
 
 revisions.each do |rev|
   the_revision = rev.match /^[^\s]+ /
