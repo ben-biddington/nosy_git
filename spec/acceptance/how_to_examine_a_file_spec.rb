@@ -34,8 +34,8 @@ describe "printing the rate of change of one file" do
     %x{ git commit -am "COMMIT #2" }
 
     result = nosy_git "README"
-    result.must =~ /COMMIT #1, lines: 5/
-    result.must =~ /COMMIT #2, lines: 10/
+    result.must =~ /lines: 5, message: COMMIT #1/
+    result.must =~ /lines: 10, message: COMMIT #2/
   end
 
   private
