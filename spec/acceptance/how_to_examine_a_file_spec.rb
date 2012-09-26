@@ -38,6 +38,15 @@ describe "printing the rate of change of one file" do
     result.must =~ /lines: 10, message: COMMIT #2/
   end
 
+  it "lists the date and time of each revision" do
+    today = Time.now
+    %x{ echo `date` >> README }
+    %x{ git commit -am "Jazz's bike seat" }
+
+    result = nosy_git "README"
+    result.must =~ /#{today}/
+  end
+
   private
 
   def nosy_git file

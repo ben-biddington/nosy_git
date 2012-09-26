@@ -12,5 +12,5 @@ revisions = Revisions.for the_file
 
 revisions.each do |rev|
   the_number_of_lines = Lines.for the_file, rev.number
-  puts "#{rev.number}, lines: #{the_number_of_lines}, message: #{rev.message[0,50]}"
+  puts "#{rev.timestamp} #{rev.number}, lines: #{the_number_of_lines}, message: #{rev.message[0,50]}"
 end
