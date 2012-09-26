@@ -19,6 +19,8 @@ end
 
 the_file = ARGV[0]
 
+require "fileutils"
+
 puts "(#{FileUtils.pwd})"
 puts "Analyzing <#{the_file}>"
 
