@@ -27,6 +27,17 @@ describe "printing the rate of change of one file" do
     result.must =~ /Phil\'s lunch box$/
   end
 
+  it "with each revision, it prints the number of lines in the file" do
+    5.times{ %x{ echo `date` >> README } }
+    %x{ git commit -am "COMMIT #1" }
+    5.times{ %x{ echo `date` >> README } }
+    %x{ git commit -am "COMMIT #2" }
+
+    result = nosy_git "README"
+    result.must =~ /COMMIT #1, lines: 5/
+    result.must =~ /COMMIT #2, lines: 10/
+  end
+
   private
 
   def nosy_git file

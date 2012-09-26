@@ -1,5 +1,14 @@
 #!/usr/bin/ruby
 
+class Lines
+  class << self
+    def for(file, revision)
+      %x{ git checkout #{revision} #{file} }
+      %x{ wc -l #{file} }.match /^[^\s]+ /
+    end
+  end
+end
+
 the_file = ARGV[0]
 
 puts "(#{FileUtils.pwd})"
@@ -7,4 +16,8 @@ puts "Analyzing <#{the_file}>"
 
 revisions = %x{ git log --oneline -- #{the_file} }
 
-puts "#{revisions}"
+revisions.each do |rev|
+  the_revision = rev.match /^[^\s]+ /
+  the_number_of_lines = Lines.for the_file, the_revision
+  puts "#{rev.strip}, lines: #{the_number_of_lines}"
+end
