@@ -9,10 +9,20 @@ class Lines
   end
 end
 
+Revision = Struct.new(:number, :message)
+
 class Revisions
   class << self
     def for(file)
-      %x{ git log --oneline -- #{file} }
+      stdout = %x{ git log --oneline -- #{file} }
+      stdout.map do |line|
+        matches = line.match /([^\s]+)\s(.+)/
+
+        the_revision       = matches[1].strip
+        the_commit_message = matches[2].strip
+        
+        Revision.new(the_revision, the_commit_message)
+      end
     end
   end
 end
@@ -27,11 +37,6 @@ puts "Analyzing <#{the_file}>"
 revisions = Revisions.for the_file
 
 revisions.each do |rev|
-  matches = rev.match /([^\s]+)\s(.+)/
-
-  the_revision = matches[1].strip
-  the_commit_message = matches[2].strip
-
-  the_number_of_lines = Lines.for the_file, the_revision
-  puts "#{the_revision}, lines: #{the_number_of_lines}, message: #{the_commit_message[0,50]}"
+  the_number_of_lines = Lines.for the_file, rev.number
+  puts "#{rev.number}, lines: #{the_number_of_lines}, message: #{rev.message[0,50]}"
 end
