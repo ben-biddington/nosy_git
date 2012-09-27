@@ -9,7 +9,8 @@ class Lines
   end
 end
 
-Revision = Struct.new(:timestamp, :number, :message, :author)
+Revision = Struct.new(:timestamp, :number, :message, :author, :changes)
+Changes  = Struct.new(:added, :deleted)
 
 class Revisions
   class << self
@@ -23,7 +24,7 @@ class Revisions
         the_author          = matches[3].strip
         the_commit_message  = matches[4].strip
 
-        Revision.new(the_timestamp, the_revision, the_commit_message, the_author)
+        Revision.new(the_timestamp, the_revision, the_commit_message, the_author, changes(file, the_revision))
       end
     end
 
@@ -32,6 +33,18 @@ class Revisions
       
       `git reset HEAD #{file}`
       `git checkout #{file}`
+    end
+
+    private
+
+    def changes(file, revision)
+      return Changes.new Lines.for(file, revision),0 unless has_parent? revision 
+      matches = `git diff --numstat #{revision}^..#{revision} -- #{file}`.match /^([\d]+)\s+([\d]+)/
+      Changes.new matches[1].strip.to_i, matches[2].strip.to_i
+    end
+
+    def has_parent?(revision)
+      `git cat-file -p #{revision}`.match /^parent/
     end
   end
 end

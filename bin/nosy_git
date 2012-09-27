@@ -18,7 +18,7 @@ revisions = Revisions.for the_file
 begin
   revisions.each do |rev|
     the_number_of_lines = Lines.for the_file, rev.number
-    puts "author:#{rev.author}, #{rev.timestamp} #{rev.number}, lines: #{the_number_of_lines}, message: #{rev.message[0,50]}"
+    puts "author:#{rev.author}, #{rev.timestamp} #{rev.number}, lines: #{the_number_of_lines}, added: #{rev.changes.added}, message: #{rev.message[0,50]}"
   end
 ensure
   Revisions.head the_file

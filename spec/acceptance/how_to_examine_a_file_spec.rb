@@ -34,8 +34,8 @@ describe "printing the rate of change of one file" do
     %x{ git commit -am "COMMIT #2" }
 
     result = nosy_git "README"
-    result.must =~ /lines: 5, message: COMMIT #1/
-    result.must =~ /lines: 10, message: COMMIT #2/
+    result.must =~ /lines: 5,.+message: COMMIT #1/
+    result.must =~ /lines: 10,.+message: COMMIT #2/
   end
 
   it "lists the date and time of each revision" do
@@ -96,7 +96,30 @@ describe "printing the rate of change of one file" do
     $?.exitstatus.must === 1
   end
 
-  it "lists lines added and deleted for each revision"
+  it "lists lines added for each revision" do
+    %x{ echo `date` >> README }
+    %x{ git commit -am "COMMIT #1" }
+    %x{ echo `date` >> README }
+    %x{ git commit -am "COMMIT #2" }
+    result = nosy_git "README"
+
+    result.must =~ /added: 1.+COMMIT #2/
+  end
+
+  it "lists lines added for the first revision" do
+    cd ".."
+    given_a_git_repo_at ".tmp"
+    cd ".tmp"
+
+    expected_lines_added=7
+
+    expected_lines_added.times{%x{ echo `date` >> README }}
+    %x{ git add -A && git commit -am "COMMIT #1" }
+
+    result = nosy_git "README"
+
+    result.must =~ /added: #{expected_lines_added}.+COMMIT #1/
+  end
 
   private
 
