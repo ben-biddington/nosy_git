@@ -49,6 +49,9 @@ describe "printing the rate of change of one file" do
     result.must =~ /#{expected_date_string}/
   end
 
+  it "lists the user that made each revision"
+  it "lists lines added and deleted for each revision"
+
   private
 
   def nosy_git file
