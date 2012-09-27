@@ -13,6 +13,11 @@ class Git
       cd current_dir
     end
 
+    def user=(name)
+      fail "Can't use empty name" if name.empty?
+      `git config user.name "#{name}"`
+    end
+
     def has_changes?; !all_clean?; end
     
     private

@@ -68,7 +68,22 @@ describe "printing the rate of change of one file" do
     Git.must_not have_changes
   end
 
-  it "lists the user that made each revision"
+  it "lists the user that made each revision" do
+    Git.user = "Ben Rules"
+    %x{ echo `date` >> README }
+    %x{ git commit -am "Rob's Mum" }    
+    
+    Git.user = "Whack Jackson"
+    %x{ echo `date` >> README }
+    %x{ git commit -am "Graeme's Face" }    
+
+    result = nosy_git "README"
+
+    result.must =~ /Ben Rules.+Rob's Mum/
+    result.must =~ /Whack Jackson.+Graeme's Face/
+  end
+
+  it "fails to start if there are any changes"
   it "lists lines added and deleted for each revision"
 
   private
