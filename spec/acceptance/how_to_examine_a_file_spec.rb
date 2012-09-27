@@ -83,7 +83,19 @@ describe "printing the rate of change of one file" do
     result.must =~ /Whack Jackson.+Graeme's Face/
   end
 
-  it "fails to start if there are any changes"
+  it "exits with status 1 if there are any changes" do
+    %x{ echo `date` >> README }
+    %x{ git commit -am "Jazz's bike seat" }
+    %x{ echo "Any staged change" >> README }
+    %x{ git commit -am "This one has been staged" }
+    %x{ echo "Any working tree change" >> README }
+
+    result = nosy_git "README"
+
+    result.must =~ /aborting/
+    $?.exitstatus.must === 1
+  end
+
   it "lists lines added and deleted for each revision"
 
   private

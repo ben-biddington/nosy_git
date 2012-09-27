@@ -5,6 +5,11 @@ the_file = ARGV[0]
 require File.join File.dirname(__FILE__), "..", "lib", "nosy_git"
 require "fileutils"
 
+if Git.has_changes?
+  puts "You have changes, aborting" 
+  exit 1
+end
+
 puts "(#{FileUtils.pwd})"
 puts "Analyzing <#{the_file}>"
 

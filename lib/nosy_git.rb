@@ -1,3 +1,5 @@
+Dir.glob("#{File.dirname(__FILE__)}/nosy_git/**/*.rb").each {|f| require f }
+
 class Lines
   class << self
     def for(file, revision)
