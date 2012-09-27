@@ -40,11 +40,13 @@ describe "printing the rate of change of one file" do
 
   it "lists the date and time of each revision" do
     today = Time.now
-    %x{ echo `date` >> README }
+    %x{ echo "Another kebab on a weekday" >> README }
     %x{ git commit -am "Jazz's bike seat" }
 
+    expected_date_string = Time.now.strftime "%a %b %d"
+
     result = nosy_git "README"
-    result.must =~ /#{today}/
+    result.must =~ /#{expected_date_string}/
   end
 
   private
