@@ -12,9 +12,15 @@ class Git
       
       cd current_dir
     end
+
+    def has_changes?; !all_clean?; end
     
     private
     
+    def all_clean?
+      `git status` =~ /nothing to commit/
+    end
+
     def clobber path
       rm_r path if File.exists? path
       mkdir path

@@ -49,6 +49,25 @@ describe "printing the rate of change of one file" do
     result.must =~ /#{expected_date_string}/
   end
 
+  it "resets to the head revision at the end!" do
+    head_revision_contents = "TWO"
+    neck_revision_contents = "ONE"
+
+    %x{ echo #{neck_revision_contents} >> README}
+    %x{ git commit -am "COMMIT #1" }
+    %x{ echo #{head_revision_contents} >> README}
+    %x{ git commit -am "COMMIT #2" }
+
+    result = nosy_git "README"
+
+    the_file_contents = `cat README`
+
+    the_file_contents.must =~ /#{head_revision_contents}/
+    the_file_contents.must =~ /#{neck_revision_contents}/
+
+    Git.must_not have_changes
+  end
+
   it "lists the user that made each revision"
   it "lists lines added and deleted for each revision"
 

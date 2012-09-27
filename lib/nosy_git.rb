@@ -23,5 +23,12 @@ class Revisions
         Revision.new(the_timestamp, the_revision, the_commit_message)
       end
     end
+
+    def head(file)
+      fail "Not resetting without a file" if file.empty?
+      
+      `git reset HEAD #{file}`
+      `git checkout #{file}`
+    end
   end
 end
