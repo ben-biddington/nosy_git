@@ -121,6 +121,18 @@ describe "printing the rate of change of one file" do
     result.must =~ /added: #{expected_lines_added}.+COMMIT #1/
   end
 
+  it "only includes lines added for the file in question" do
+    3.times{`echo "xxx" >> another_file.rb`}
+    `git add another_file.rb`
+
+    %x{ echo `date` >> README }
+    %x{ git commit -am "COMMIT #1" }
+
+    result = nosy_git "README"
+
+    result.must =~ /added: 1.+COMMIT #1/
+  end
+
   private
 
   def nosy_git file
