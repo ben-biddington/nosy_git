@@ -32,7 +32,7 @@ class Revisions
     private
 
     def log_entries_for file
-      %x{ git log --format="%ct %H auth='%an' %s" -- #{file} }
+      %x{ git log --format="%ct %H auth='%an' %s" --follow -- #{file} }
     end
 
     def to_revision(file, line)
@@ -48,7 +48,11 @@ class Revisions
 
     def changes(file, revision)
       return Changes.new Lines.for(file, revision),0 unless has_parent? revision 
+      
       matches = `git diff --numstat #{revision}^..#{revision} -- #{file}`.match /^([\d]+)\s+([\d]+)/
+
+      return Changes.new unless matches
+
       Changes.new matches[1].strip.to_i, matches[2].strip.to_i
     end
 

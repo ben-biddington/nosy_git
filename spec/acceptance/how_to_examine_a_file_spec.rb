@@ -34,8 +34,8 @@ describe "printing the rate of change of one file" do
     %x{ git commit -am "COMMIT #2" }
 
     result = nosy_git "README"
-    result.must =~ /lines: 5,.+message: COMMIT #1/
-    result.must =~ /lines: 10,.+message: COMMIT #2/
+    result.must =~ /lines: 5.+message: COMMIT #1/
+    result.must =~ /lines: 10.+message: COMMIT #2/
   end
 
   it "lists the date and time of each revision" do
@@ -131,6 +131,26 @@ describe "printing the rate of change of one file" do
     result = nosy_git "README"
 
     result.must =~ /added: 1.+COMMIT #1/
+  end
+
+  it "includes commits across file renames" do
+    %x{ echo `date` >> README }
+    %x{ git commit -am "COMMIT #1 on original README" }
+    %x{ echo `date` >> README }
+    %x{ git commit -am "COMMIT #2 on original README" }
+    %x{ mv README README_RENAMED }
+    %x{ git add -A }
+    %x{ git commit -m "Renamed file" }
+    
+    result = nosy_git "README_RENAMED"
+    
+    result.must =~ /COMMIT #1 on original README/
+    result.must =~ /COMMIT #2 on original README/
+    result.must =~ /Renamed file/
+  end
+
+  it "files before the rename cannot have their \"lines added collected\", and so they come through as zero" do
+    pending "This is because we're running `git log -- <RENAMED_FILE>` and so the old file name does not register"
   end
 
   private
