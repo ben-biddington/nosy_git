@@ -15,13 +15,14 @@ end
 puts "(#{FileUtils.pwd})"
 puts "Analyzing <#{the_file}>"
 
-revisions = Revisions.for the_file
-
-begin
-  revisions.each do |rev|
+class RevisionText
+  def self.print(the_file, rev)
     the_number_of_lines = Lines.for the_file, rev.number
-    puts "author:#{rev.author}, #{rev.timestamp} #{rev.number}, lines: #{the_number_of_lines}, added: #{rev.changes.added}, message: #{rev.message[0,50]}"
+
+    "author:#{rev.author.ljust(25)}, #{rev.timestamp} #{rev.number}, lines: #{the_number_of_lines}, added: #{rev.changes.added}, message: #{rev.message[0,50]}"
   end
-ensure
-  Revisions.head the_file
+end
+
+Revisions.for(the_file).each do |rev|
+  puts RevisionText.print the_file, rev 
 end
