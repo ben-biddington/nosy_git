@@ -1,4 +1,6 @@
 class Git
+  require "fileutils"
+
   extend FileUtils
 
   class << self
