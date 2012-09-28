@@ -3,8 +3,12 @@ Dir.glob("#{File.dirname(__FILE__)}/nosy_git/**/*.rb").each {|f| require f }
 class Lines
   class << self
     def for(file, revision)
-      %x{ git checkout #{revision} #{file} }
-      %x{ wc -l #{file} }.match(/^([^\s]+) /)[1]
+      begin
+        %x{ git checkout #{revision} #{file} }
+        %x{ wc -l #{file} }.match(/^([^\s]+) /)[1]
+      ensure
+        Revisions.head file
+      end
     end
   end
 end
@@ -15,17 +19,7 @@ Changes  = Struct.new(:added, :deleted)
 class Revisions
   class << self
     def for(file)
-      stdout = %x{ git log --format="%ct %H auth='%an' %s" -- #{file} }
-      stdout.map do |line|
-        matches = line.match /([^\s]+)\s([^\s]+)\sauth='([^\"]+)'\s(.+)/
-
-        the_timestamp       = Time.at matches[1].strip.to_i
-        the_revision        = matches[2].strip
-        the_author          = matches[3].strip
-        the_commit_message  = matches[4].strip
-
-        Revision.new(the_timestamp, the_revision, the_commit_message, the_author, changes(file, the_revision))
-      end
+      log_entries_for(file).map{|line| to_revision file, line }
     end
 
     def head(file)
@@ -36,6 +30,21 @@ class Revisions
     end
 
     private
+
+    def log_entries_for file
+      %x{ git log --format="%ct %H auth='%an' %s" -- #{file} }
+    end
+
+    def to_revision(file, line)
+      matches = line.match /([^\s]+)\s([^\s]+)\sauth='([^\"]+)'\s(.+)/
+
+      the_timestamp       = Time.at matches[1].strip.to_i
+      the_revision        = matches[2].strip
+      the_author          = matches[3].strip
+      the_commit_message  = matches[4].strip
+      
+      Revision.new(the_timestamp, the_revision, the_commit_message, the_author, changes(file, the_revision))
+    end
 
     def changes(file, revision)
       return Changes.new Lines.for(file, revision),0 unless has_parent? revision 
