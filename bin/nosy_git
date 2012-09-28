@@ -1,5 +1,7 @@
 #!/usr/bin/ruby
 
+STDOUT.sync = true
+
 the_file = ARGV[0]
 
 require File.join File.dirname(__FILE__), "..", "lib", "nosy_git"
