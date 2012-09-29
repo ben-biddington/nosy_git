@@ -24,7 +24,7 @@ unless File.file? the_file
   UI.die "#{the_file} is not a file"
 end
 
-puts "(#{FileUtils.pwd})"
-puts "Analyzing <#{the_file}>"
+UI.print "(#{FileUtils.pwd})"
+UI.print "Analyzing <#{the_file}>"
 
 NosyGit.analyze the_file
