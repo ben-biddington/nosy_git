@@ -5,8 +5,8 @@ describe "displaying the revision history of a file" do
   include NosyGitAcceptanceTest
   
   it "prints the working directory" do
-    result = nosy_git "README"
-    result.must =~ /\(#{Regexp.escape(pwd)}\)$/
+    nosy_git "README"
+    then_it_shows /\(#{Regexp.escape(pwd)}\)$/
   end
 
   it "lists each revision" do
@@ -15,9 +15,9 @@ describe "displaying the revision history of a file" do
     %x{ echo `date` >> README }
     %x{ git commit -am "Phil's lunch box" }
 
-    result = nosy_git "README"
-    result.must =~ /Jazz\'s bike seat/
-    result.must =~ /Phil\'s lunch box/
+    nosy_git "README"
+    then_it_shows /Jazz\'s bike seat/
+    then_it_shows /Phil\'s lunch box/
   end
 
   it "with each revision, it prints the number of lines in the file" do
@@ -26,7 +26,7 @@ describe "displaying the revision history of a file" do
     5.times{ %x{ echo `date` >> README } }
     %x{ git commit -am "COMMIT #2" }
 
-    result = nosy_git "README"
+    nosy_git "README"
 
     then_it_shows /lines: 5.+message: COMMIT #1/
     then_it_shows /lines: 10.+message: COMMIT #2/
@@ -39,8 +39,8 @@ describe "displaying the revision history of a file" do
 
     expected_date_string = Time.now.strftime "%a %b %d"
 
-    result = nosy_git "README"
-    result.must =~ /#{expected_date_string}/
+    nosy_git "README"
+    then_it_shows /#{expected_date_string}/
   end
 
   it "resets to the head revision at the end!" do
@@ -52,7 +52,7 @@ describe "displaying the revision history of a file" do
     %x{ echo #{head_revision_contents} >> README}
     %x{ git commit -am "COMMIT #2" }
 
-    result = nosy_git "README"
+    nosy_git "README"
 
     the_file_contents = `cat README`
 
@@ -71,10 +71,10 @@ describe "displaying the revision history of a file" do
     %x{ echo `date` >> README }
     %x{ git commit -am "Graeme's Face" }    
 
-    result = nosy_git "README"
+    nosy_git "README"
 
-    result.must =~ /Ben Rules.+Rob's Mum/
-    result.must =~ /Whack Jackson.+Graeme's Face/
+    then_it_shows /Ben Rules.+Rob's Mum/
+    then_it_shows /Whack Jackson.+Graeme's Face/
   end
 
   it "lists lines added for each revision" do
@@ -84,7 +84,7 @@ describe "displaying the revision history of a file" do
     %x{ git commit -am "COMMIT #2" }
     result = nosy_git "README"
 
-    result.must =~ /added: 1.+COMMIT #2/
+    then_it_shows /added: 1.+COMMIT #2/
   end
 
   it "lists lines added for the first revision" do
@@ -97,9 +97,9 @@ describe "displaying the revision history of a file" do
     expected_lines_added.times{%x{ echo `date` >> README }}
     %x{ git add -A && git commit -am "COMMIT #1" }
 
-    result = nosy_git "README"
+    nosy_git "README"
 
-    result.must =~ /added: #{expected_lines_added}.+COMMIT #1/
+    then_it_shows /added: #{expected_lines_added}.+COMMIT #1/
   end
 
   it "only includes lines added for the file in question" do
@@ -109,9 +109,9 @@ describe "displaying the revision history of a file" do
     %x{ echo `date` >> README }
     %x{ git commit -am "COMMIT #1" }
 
-    result = nosy_git "README"
+    nosy_git "README"
 
-    result.must =~ /added: 1.+COMMIT #1/
+    then_it_shows /added: 1.+COMMIT #1/
   end
 
   it "includes commits across file renames" do
@@ -123,11 +123,11 @@ describe "displaying the revision history of a file" do
     %x{ git add -A }
     %x{ git commit -m "Renamed file" }
     
-    result = nosy_git "README_RENAMED"
+    nosy_git "README_RENAMED"
     
-    result.must =~ /COMMIT #1 on original README/
-    result.must =~ /COMMIT #2 on original README/
-    result.must =~ /Renamed file/
+    then_it_shows /COMMIT #1 on original README/
+    then_it_shows /COMMIT #2 on original README/
+    then_it_shows /Renamed file/
   end
 
   it "files before the rename cannot have their \"lines added collected\", and so they come through as zero" do
