@@ -1,7 +1,7 @@
 require "spec_helper"
 require File.join File.dirname(__FILE__), "nosy_git_acceptance_test"
 
-describe "printing the rate of change of one file" do
+describe "displaying the revision history of a file" do
   include NosyGitAcceptanceTest
   
   it "prints the working directory" do
