@@ -15,18 +15,15 @@ module NosyGitAcceptanceTest
 
   protected
 
+  def then_it_aborts_because(reason)
+    then_it_shows reason
+    $?.exitstatus.must === 1
+  end
+
   def then_it_shows(message)
     fail "there is no result to assert on" unless result
     message = /^message$/ unless message.is_a? Regexp
     result.must =~ message
-  end
-
-  def then_it_aborts_because(reason)
-    fail "there is no result to assert on" unless result
-    reason = /^reason$/ unless reason.is_a? Regexp
-    result.must =~ reason 
-
-    $?.exitstatus.must === 1
   end
 
   attr_accessor :result
