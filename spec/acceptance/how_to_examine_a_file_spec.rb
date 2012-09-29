@@ -101,6 +101,13 @@ describe "printing the rate of change of one file" do
     $?.exitstatus.must === 1
   end
 
+  it "exits with status 1 if the argument is missing" do
+    result = nosy_git nil
+
+    result.must =~ /No file/
+    $?.exitstatus.must === 1
+  end
+
   it "lists lines added for each revision" do
     %x{ echo `date` >> README }
     %x{ git commit -am "COMMIT #1" }
