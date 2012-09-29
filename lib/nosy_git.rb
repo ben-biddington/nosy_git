@@ -1,5 +1,17 @@
 Dir.glob("#{File.dirname(__FILE__)}/nosy_git/**/*.rb").each {|f| require f }
 
+$".grep(/ui/).each{|f| puts f}
+
+class NosyGit
+  class << self
+    def analyze file
+      Revisions.for(file).each do |rev|
+        puts RevisionText.print file, rev 
+      end
+    end
+  end
+end
+
 class Lines
   class << self
     def for(file, revision)
