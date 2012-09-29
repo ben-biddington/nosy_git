@@ -2,19 +2,23 @@ require "spec_helper"
 
 module NosyGitAcceptanceTest
   include FileUtils
+  
+  def self.included klass
+    klass.class_eval do
+      before do
+        given_a_git_repo_at ".tmp"
+        cd ".tmp"
+        commit_a_readme
+      end
+
+      after { cd ".." }
+    end
+  end
 end
 
 describe "printing the rate of change of one file" do
   include NosyGitAcceptanceTest
-
-  before do
-    given_a_git_repo_at ".tmp"
-    cd ".tmp"
-    commit_a_readme
-  end
-
-  after { cd ".." }
-
+  
   it "prints the working directory" do
     result = nosy_git "README"
     result.must =~ /\(#{Regexp.escape(pwd)}\)$/
