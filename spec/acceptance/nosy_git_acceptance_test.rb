@@ -15,9 +15,11 @@ module NosyGitAcceptanceTest
 
   protected
 
+  attr_accessor :result
+
   def nosy_git file
     #NosyGit.analyze file
-    %x{ ../bin/nosy_git #{file} }
+    result = %x{ ../bin/nosy_git #{file} }
   end
   
   def given_a_git_repo_at path
