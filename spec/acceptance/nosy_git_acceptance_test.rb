@@ -18,7 +18,6 @@ module NosyGitAcceptanceTest
   attr_accessor :result
 
   def nosy_git file
-    #NosyGit.analyze file
     result = %x{ ../bin/nosy_git #{file} }
   end
   
