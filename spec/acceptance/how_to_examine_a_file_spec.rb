@@ -145,21 +145,4 @@ describe "printing the rate of change of one file" do
   it "files before the rename cannot have their \"lines added collected\", and so they come through as zero" do
     pending "This is because we're running `git log -- <RENAMED_FILE>` and so the old file name does not register"
   end
-
-  private
-
-  def nosy_git file
-    #NosyGit.analyze file
-    %x{ ../bin/nosy_git #{file} }
-  end
-  
-  def given_a_git_repo_at path
-    Git.create_at path
-  end
-
-  def commit_a_readme
-    %x{ touch README }
-    %x{ git add -A }
-    %x{ git commit -m "First commit" }
-  end
 end

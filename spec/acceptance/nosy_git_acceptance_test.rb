@@ -12,4 +12,21 @@ module NosyGitAcceptanceTest
       after { cd ".." }
     end
   end
+
+  protected
+
+  def nosy_git file
+    #NosyGit.analyze file
+    %x{ ../bin/nosy_git #{file} }
+  end
+  
+  def given_a_git_repo_at path
+    Git.create_at path
+  end
+
+  def commit_a_readme
+    %x{ touch README }
+    %x{ git add -A }
+    %x{ git commit -m "First commit" }
+  end
 end
