@@ -95,10 +95,9 @@ describe "printing the rate of change of one file" do
     `touch #{dirname}/.gitkeep`
     `git add -A && git commit -m "Commiting a dir"`
     
-    result = nosy_git "#{dirname}"
+    nosy_git "#{dirname}"
 
-    result.must =~ /#{dirname} is not a file/
-    $?.exitstatus.must === 1
+    then_it_aborts_because /#{dirname} is not a file/
   end
 
   it "exits with status 1 if the argument is missing" do

@@ -15,10 +15,18 @@ module NosyGitAcceptanceTest
 
   protected
 
+  def then_it_aborts_because(reason)
+    fail "there is no result to assert on" unless result
+    reason = /^reason$/ unless reason.is_a? Regexp
+    result.must =~ reason 
+
+    $?.exitstatus.must === 1
+  end
+
   attr_accessor :result
 
   def nosy_git file
-    result = %x{ ../bin/nosy_git #{file} }
+    self.result = %x{ ../bin/nosy_git #{file} }
   end
   
   def given_a_git_repo_at path
