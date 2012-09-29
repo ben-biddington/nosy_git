@@ -1,7 +1,7 @@
 require "spec_helper"
 require File.join File.dirname(__FILE__), "nosy_git_acceptance_test"
 
-describe "errors" do
+describe "constraints" do
   include NosyGitAcceptanceTest
 
   it "exits with status 1 if there are any changes" do
