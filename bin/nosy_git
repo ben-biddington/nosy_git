@@ -11,6 +11,11 @@ if Git.has_changes?
   exit 1
 end
 
+unless File.file? the_file
+  puts "#{the_file} is not a file"
+  exit 1
+end
+
 puts "(#{FileUtils.pwd})"
 puts "Analyzing <#{the_file}>"
 

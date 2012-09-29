@@ -89,6 +89,18 @@ describe "printing the rate of change of one file" do
     $?.exitstatus.must === 1
   end
 
+  it "exits with status 1 if the argument is not a file" do
+    dirname = "a_directory"
+    `mkdir #{dirname}`
+    `touch #{dirname}/.gitkeep`
+    `git add -A && git commit -m "Commiting a dir"`
+    
+    result = nosy_git "#{dirname}"
+
+    result.must =~ /#{dirname} is not a file/
+    $?.exitstatus.must === 1
+  end
+
   it "lists lines added for each revision" do
     %x{ echo `date` >> README }
     %x{ git commit -am "COMMIT #1" }
