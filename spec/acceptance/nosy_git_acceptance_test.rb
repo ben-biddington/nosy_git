@@ -17,7 +17,7 @@ module NosyGitAcceptanceTest
 
   def then_it_aborts_because(reason)
     then_it_shows reason
-    $?.exitstatus.must === 1
+    exitstatus.must === 1
   end
 
   def then_it_shows(message)
@@ -26,10 +26,11 @@ module NosyGitAcceptanceTest
     result.must =~ message
   end
 
-  attr_accessor :result
+  attr_accessor :result, :exitstatus
 
   def nosy_git file
     self.result = %x{ ../bin/nosy_git #{file} }
+    self.exitstatus = $?.exitstatus
   end
   
   def given_a_git_repo_at path
