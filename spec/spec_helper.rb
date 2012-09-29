@@ -1,6 +1,8 @@
 $:.unshift './bin'
 
-Dir.glob("./lib/nosy_git/**/*.rb").each {|f| require f }
+require "./lib/nosy_git"
+
+#Dir.glob("./lib/nosy_git/**/*.rb").each {|f| require f }
 Dir.glob("./spec/acceptance/lib/**/*.rb").each {|f| require f}
 
 require 'rspec'
