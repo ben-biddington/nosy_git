@@ -6,14 +6,22 @@ the_file = ARGV[0]
 
 require File.join File.dirname(__FILE__), "..", "lib", "nosy_git"
 
+class UI
+  class << self
+    def die(because)
+      print because
+      exit 1
+    end
+    def print what; puts what; end
+  end
+end
+
 if Git.has_changes?
-  puts "You have changes, aborting" 
-  exit 1
+  UI.die "You have changes, aborting" 
 end
 
 unless File.file? the_file
-  puts "#{the_file} is not a file"
-  exit 1
+  UI.die "#{the_file} is not a file"
 end
 
 puts "(#{FileUtils.pwd})"
