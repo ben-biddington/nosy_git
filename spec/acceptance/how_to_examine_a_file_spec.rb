@@ -85,8 +85,7 @@ describe "printing the rate of change of one file" do
 
     result = nosy_git "README"
 
-    result.must =~ /aborting/
-    $?.exitstatus.must === 1
+    then_it_aborts_because /You have changes/
   end
 
   it "exits with status 1 if the argument is not a file" do
@@ -102,9 +101,7 @@ describe "printing the rate of change of one file" do
 
   it "exits with status 1 if the argument is missing" do
     result = nosy_git nil
-
-    result.must =~ /No file/
-    $?.exitstatus.must === 1
+    then_it_aborts_because /No file/
   end
 
   it "lists lines added for each revision" do
