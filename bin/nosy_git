@@ -6,13 +6,8 @@ the_file = ARGV[0]
 
 require File.join File.dirname(__FILE__), "..", "lib", "nosy_git"
 
-if Git.has_changes?
-  UI.die "You have changes, aborting" 
-end
-
-unless File.file? the_file
-  UI.die "#{the_file} is not a file"
-end
+UI.die "You have changes, aborting" if Git.has_changes?
+UI.die "#{the_file} is not a file"  unless File.file? the_file
 
 UI.print "(#{FileUtils.pwd})"
 UI.print "Analyzing <#{the_file}>"
