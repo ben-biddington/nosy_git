@@ -27,8 +27,9 @@ describe "displaying the revision history of a file" do
     %x{ git commit -am "COMMIT #2" }
 
     result = nosy_git "README"
-    result.must =~ /lines: 5.+message: COMMIT #1/
-    result.must =~ /lines: 10.+message: COMMIT #2/
+
+    then_it_shows /lines: 5.+message: COMMIT #1/
+    then_it_shows /lines: 10.+message: COMMIT #2/
   end
 
   it "lists the date and time of each revision" do
