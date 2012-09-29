@@ -1,7 +1,11 @@
 require "spec_helper"
 
-describe "printing the rate of change of one file" do
+module NosyGitAcceptanceTest
   include FileUtils
+end
+
+describe "printing the rate of change of one file" do
+  include NosyGitAcceptanceTest
 
   before do
     given_a_git_repo_at ".tmp"
@@ -156,6 +160,7 @@ describe "printing the rate of change of one file" do
   private
 
   def nosy_git file
+    #NosyGit.analyze file
     %x{ ../bin/nosy_git #{file} }
   end
   
