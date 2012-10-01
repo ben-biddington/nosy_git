@@ -6,4 +6,4 @@ the_file = ARGV[0]
 
 require File.join File.dirname(__FILE__), "..", "lib", "nosy_git"
 
-NosyGit.analyze the_file
+NosyGit.new(the_file).analyze 
