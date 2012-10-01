@@ -34,4 +34,9 @@ describe "constraints" do
     nosy_git nil
     then_it_aborts_because /No file/
   end
+
+  it "exits with status 1 if the argument is a file that does not exist" do
+    nosy_git "xxx_any_file_that_does_not_exist_xxx"
+    then_it_aborts_because /File not found/
+  end
 end
