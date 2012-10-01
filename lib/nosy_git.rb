@@ -6,9 +6,7 @@ class NosyGit
   end
   
   def analyze
-    verify
-    header
-    body
+    apply_constraints
   end
 
   private
@@ -20,8 +18,19 @@ class NosyGit
     UI.print "Analyzing <#{@file}>"
   end
 
-  def verify
-    Constraints.apply_to @file
+  def apply_constraints
+    file_constraints = Constraints.new @file
+    
+    file_constraints.when_valid do
+      header
+      body
+    end
+    
+    file_constraints.when_invalid do |reason|
+      UI.die reason
+    end
+
+    file_constraints.apply
   end
 
   def body
