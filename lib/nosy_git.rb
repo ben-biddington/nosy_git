@@ -11,13 +11,6 @@ class NosyGit
 
   private
 
-  def header
-    require 'fileutils'
-    
-    UI.print "(#{FileUtils.pwd})"
-    UI.print "Analyzing <#{@file}>"
-  end
-
   def apply_constraints
     file_constraints = Constraints.new @file
     
@@ -27,15 +20,26 @@ class NosyGit
     end
     
     file_constraints.when_invalid do |reason|
-      UI.die reason
+      abort reason
     end
 
     file_constraints.apply
+  end
+
+  def header
+    require 'fileutils'
+    
+    UI.print "(#{FileUtils.pwd})"
+    UI.print "Analyzing <#{@file}>"
   end
 
   def body
     Revisions.for(@file).each do |rev|
       UI.print RevisionText.print @file, rev 
     end
+  end
+
+  def abort(why)
+    UI.die why
   end
 end
