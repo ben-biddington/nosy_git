@@ -1,7 +1,9 @@
 class Constraints
-  def initialize(file)
+  def initialize(file, &block)
     @file = file
     @passed = true
+    
+    yield self if block_given?
   end
   
   def when_invalid &_then
