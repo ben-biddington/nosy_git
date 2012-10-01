@@ -21,10 +21,7 @@ class NosyGit
     end
 
     def verify(file)
-      UI.die "You have changes, aborting."       if Git.has_changes?
-      UI.die "No file supplied, aborting."       if file.nil? or file.empty?
-      UI.die "File not found, aborting."       unless File.exists? file
-      UI.die "#{file} is not a file, aborting."  unless File.file? file
+      Constraints.apply_to file
     end
   end
 end
