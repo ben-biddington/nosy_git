@@ -1,4 +1,9 @@
-Revision = Struct.new(:timestamp, :number, :message, :author, :changes)
+Revision = Struct.new(:file, :timestamp, :number, :message, :author, :changes) do
+  def line_count
+    @line_count ||= Lines.for(file, number)
+  end
+end
+
 Changes  = Struct.new(:added, :deleted) do
   def net_added
     added-deleted
@@ -32,7 +37,14 @@ class Revisions
       the_author          = matches[3].strip
       the_commit_message  = matches[4].strip
       
-      Revision.new(the_timestamp, the_revision, the_commit_message, the_author, changes(file, the_revision))
+      Revision.new(
+        file,           
+        the_timestamp, 
+        the_revision, 
+        the_commit_message, 
+        the_author, 
+        changes(file, the_revision)
+      )
     end
 
     def changes(file, revision)

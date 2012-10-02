@@ -4,8 +4,16 @@ class Pretty
     print_header
   end
   
-  def print(what)
-    UI.print what
+  def print(revision)
+    msg = revision.message.length > 50 ? "#{revision.message[0,50]}..." : revision.message
+
+    UI.print "author:#{revision.author.ljust(25)}, " + 
+      "#{revision.timestamp} #{revision.number}, " + 
+      "lines: #{revision.line_count.to_s.ljust(10)}, " + 
+      "added: #{revision.changes.added.to_s.ljust(10)}, " + 
+      "deleted: #{revision.changes.deleted.to_s.ljust(10)}, " + 
+      "change: #{revision.changes.net_added.to_s.ljust(10)}, " + 
+      "message: #{msg}"
   end
 
   def die(because)
@@ -21,3 +29,14 @@ class Pretty
     UI.print "Analyzing <#{@file}>"
   end
 end
+
+class UI
+  class << self
+    def die(because)
+      print because
+      exit 1
+    end
+    def print what; puts what; end
+  end
+end
+

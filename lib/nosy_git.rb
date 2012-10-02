@@ -16,7 +16,7 @@ class NosyGit
 
   def analyze_core
     Revisions.for(@file).each do |rev|
-      @ui.print RevisionText.print @file, rev 
+      @ui.print rev 
     end
   end
 
