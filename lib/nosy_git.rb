@@ -5,7 +5,7 @@ class NosyGit
     @file = file
     @file_constraints = Constraints.new @file do |c|
       c.when_valid   { analyze_core }
-      c.when_invalid { |reason| abort reason }
+      c.when_invalid { |reason| abort_because reason }
     end
     @ui = Pretty.new file
   end
@@ -20,5 +20,5 @@ class NosyGit
     end
   end
 
-  def abort(why); @ui.die why; end
+  def abort_because(why); @ui.die why; end
 end

@@ -17,7 +17,7 @@ class RevisionText
     "author:#{rev.author.ljust(25)}, " + 
     "#{rev.timestamp} #{rev.number}, " + 
     "lines: #{the_number_of_lines.to_s.ljust(10)}, " + 
-    "added: #{rev.changes.added.to_s.ljust(10)}, " + 
+    "added: #{rev.changes.net_added.to_s.ljust(10)}, " + 
     "message: #{msg}"
   end
 end

@@ -1,5 +1,9 @@
 Revision = Struct.new(:timestamp, :number, :message, :author, :changes)
-Changes  = Struct.new(:added, :deleted)
+Changes  = Struct.new(:added, :deleted) do
+  def net_added
+    added-deleted
+  end
+end
 
 class Revisions
   class << self
@@ -36,7 +40,7 @@ class Revisions
       
       matches = `git diff --numstat #{revision}^..#{revision} -- #{file}`.match /^([\d]+)\s+([\d]+)/
 
-      return Changes.new unless matches
+      return Changes.new(0,0) unless matches
 
       Changes.new matches[1].strip.to_i, matches[2].strip.to_i
     end

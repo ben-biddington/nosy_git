@@ -10,6 +10,7 @@ class Git
       clobber path
       
       cd path
+      
       %x{ git init }
       
       cd current_dir

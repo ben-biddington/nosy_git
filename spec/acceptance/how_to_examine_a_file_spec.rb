@@ -77,43 +77,6 @@ describe "displaying the revision history of a file" do
     then_it_shows /Whack Jackson.+Graeme's Face/
   end
 
-  it "lists lines added for each revision" do
-    %x{ echo `date` >> README }
-    %x{ git commit -am "COMMIT #1" }
-    %x{ echo `date` >> README }
-    %x{ git commit -am "COMMIT #2" }
-    result = nosy_git "README"
-
-    then_it_shows /added: 1.+COMMIT #2/
-  end
-
-  it "lists lines added for the first revision" do
-    cd ".."
-    given_a_git_repo_at ".tmp"
-    cd ".tmp"
-
-    expected_lines_added=7
-
-    expected_lines_added.times{%x{ echo `date` >> README }}
-    %x{ git add -A && git commit -am "COMMIT #1" }
-
-    nosy_git "README"
-
-    then_it_shows /added: #{expected_lines_added}.+COMMIT #1/
-  end
-
-  it "only includes lines added for the file in question" do
-    3.times{`echo "xxx" >> another_file.rb`}
-    `git add another_file.rb`
-
-    %x{ echo `date` >> README }
-    %x{ git commit -am "COMMIT #1" }
-
-    nosy_git "README"
-
-    then_it_shows /added: 1.+COMMIT #1/
-  end
-
   it "includes commits across file renames" do
     %x{ echo `date` >> README }
     %x{ git commit -am "COMMIT #1 on original README" }
@@ -134,3 +97,4 @@ describe "displaying the revision history of a file" do
     pending "This is because we're running `git log -- <RENAMED_FILE>` and so the old file name does not register"
   end
 end
+
