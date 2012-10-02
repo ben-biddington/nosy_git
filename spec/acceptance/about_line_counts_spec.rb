@@ -5,15 +5,31 @@ describe "the line counts it returns" do
   include NosyGitAcceptanceTest
 
   it "lists (net) lines added for each revision" do
-    10.times{ %x{ echo `date` >> README }}
-    %x{ git commit -am "COMMIT #1 (contains 10 lines)" }
+    five_lines = <<-EOF
+      line 1
+      line 2
+      line 3
+      line 4
+      line 5
+    EOF
     
-    %x{cat /dev/null > README }
+    %x{ echo "#{five_lines}" > README }
+    %x{ git commit -am "COMMIT #1 (contains 5 lines)" }
+    
+    one_deleted_three_added = <<-EOF
+      line 1
+      line 2
+      line 3
+      line 4
+      line 6
+      line 7
+      line 8
+    EOF
 
-    5.times{ %x{ echo `date` >> README }}
-    %x{ git commit -am "COMMIT #2 (10 lines deleted, 5 lines added)" }
+    %x{ echo "#{one_deleted_three_added}" > README }
+    %x{ git commit -am "COMMIT #2" }
     
-    expected_net_added = 5-10
+    expected_net_added = 3-1
 
     result = nosy_git "README"
 
