@@ -4,7 +4,7 @@ require File.join File.dirname(__FILE__), "nosy_git_acceptance_test"
 describe "the line counts it returns" do
   include NosyGitAcceptanceTest
 
-  it "lists (net) lines added for each revision" do
+  it "lists the change (added minus deleted) for each revision" do
     five_lines = <<-EOF
       line 1
       line 2
@@ -29,11 +29,11 @@ describe "the line counts it returns" do
     %x{ echo "#{one_deleted_three_added}" > README }
     %x{ git commit -am "COMMIT #2" }
     
-    expected_net_added = 3-1
+    expected_change = 3-1
 
     result = nosy_git "README"
 
-    then_it_shows /added: #{expected_net_added}.+COMMIT #2/
+    then_it_shows /change: #{expected_change}.+COMMIT #2/
   end
 
   it "lists lines added for the first revision" do
