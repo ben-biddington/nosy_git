@@ -96,5 +96,11 @@ describe "displaying the revision history of a file" do
   it "files before the rename cannot have their \"lines added collected\", and so they come through as zero" do
     pending "This is because we're running `git log -- <RENAMED_FILE>` and so the old file name does not register"
   end
+
+  it "if you check out a file at a revision where it does not exist it does nothing -- meaning you get head. 
+  Need to check with `git s` to see if the co had any affect"
+
+# This happens during renames -- you can't check out a file when it does not exist
+
 end
 
