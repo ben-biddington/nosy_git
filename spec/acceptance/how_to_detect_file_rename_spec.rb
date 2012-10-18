@@ -29,4 +29,15 @@ describe "detecting file renames using `git diff`" do
     
     Rename.for("README", "HEAD^").must be_nil
   end
+
+  it "can get the new name for a commit that is a rename AND a change" do
+    %x{ 
+      echo "#1" >> README && git commit -am "COMMIT #1"
+      echo "Changing the readme and renaming in one commit" > README
+      git mv README "README RENAMED"
+      git commit -m "Renamed the README, and added some text"
+    }
+    
+    result = Rename.for("README", "HEAD").must === "README RENAMED"
+  end
 end
