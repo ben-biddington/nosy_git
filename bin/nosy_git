@@ -6,6 +6,6 @@ the_file = ARGV[0]
 
 require File.join File.dirname(__FILE__), "..", "lib", "nosy_git"
 
-ui = Pretty.new(the_file)
+ui = CSV.new(the_file)
 
 NosyGit.new(the_file, ui).analyze 
