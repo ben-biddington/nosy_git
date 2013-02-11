@@ -6,7 +6,7 @@ class CSV
 
   def print(revision)
     UI.print( 
-      "#{revision.timestamp}," + 
+      "\"#{revision.timestamp}\"," + 
       "#{revision.changes.added}," + 
       "#{revision.changes.deleted}," + 
       "#{revision.changes.net_added}"
