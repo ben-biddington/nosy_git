@@ -1,13 +1,13 @@
 Dir.glob("#{File.dirname(__FILE__)}/nosy_git/**/*.rb").each {|f| require f }
 
 class NosyGit
-  def initialize(file)
+  def initialize(file,ui)
     @file = file
     @file_constraints = Constraints.new @file do |c|
       c.when_valid   { analyze_core }
       c.when_invalid { |reason| abort_because reason }
     end
-    @ui = Pretty.new file
+    @ui = ui
   end
   
   def analyze; @file_constraints.apply; end
