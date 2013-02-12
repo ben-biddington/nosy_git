@@ -1,0 +1,6 @@
+require "spec_helper"
+require File.join File.dirname(__FILE__), "..", "nosy_git_acceptance_test"
+
+describe "The greatest hist report" do
+  it "shows the top 5 longest files"
+end
