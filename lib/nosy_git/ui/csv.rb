@@ -9,7 +9,8 @@ class CSV
       "\"#{revision.timestamp}\"," + 
       "#{revision.changes.added}," + 
       "#{revision.changes.deleted}," + 
-      "#{revision.changes.net_added}"
+      "#{revision.changes.net_added}," +
+      "#{revision.line_count}"
     )
   end
 
@@ -20,6 +21,6 @@ class CSV
   private
 
   def print_header
-    UI.print "timestamp,added,deleted,change"
+    UI.print "timestamp,added,deleted,change,line_count"
   end
 end

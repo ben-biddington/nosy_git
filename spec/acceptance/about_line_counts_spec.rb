@@ -62,4 +62,16 @@ describe "the line counts it returns" do
 
     then_it_shows /added: 1.+COMMIT #1/
   end
+
+  it "shows how many lines the file contains" do
+    3.times do |i|
+      %x{ echo `date` >> README }
+    end
+
+    %x{ git commit -am "COMMIT #1 with three lines in it" }
+    
+    nosy_git "README"
+
+    then_it_shows /lines:\s+3/
+  end
 end
