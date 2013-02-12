@@ -13,6 +13,7 @@ class Pretty
       "added: #{revision.changes.added.to_s.ljust(10)}, " + 
       "deleted: #{revision.changes.deleted.to_s.ljust(10)}, " + 
       "change: #{revision.changes.net_added.to_s.ljust(10)}, " + 
+      "lines: #{revision.line_count.to_s.ljust(10)}, " + 
       "message: #{msg}"
   end
 
