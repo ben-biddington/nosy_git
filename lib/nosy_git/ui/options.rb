@@ -1,8 +1,8 @@
 class Options
-  require 'optparse'
-
   def initialize(args)
     @format = Pretty
+
+    require 'optparse'
 
     OptionParser.new do |opts|
       opts.on("-f", "--format FORMAT", "The output format (defaults to pretty)") do |format|
